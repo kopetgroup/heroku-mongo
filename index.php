@@ -10,6 +10,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 require 'vendor/autoload.php';
 
+$_SERVER['MONGODB_URI'] = 'mongodb://root:root@ds040877.mlab.com:40877/merlin-pringles';
 $mongo  = new \MongoDB\Client($_SERVER['MONGODB_URI']);
 $db     = basename($_SERVER['MONGODB_URI']);
 $action = $mongo->$db->kopet;
@@ -25,6 +26,7 @@ if(isset($_GET['insert'])){
 
     $i = 1;
     foreach($data as $t){
+      $t->_id = sha1(json_encode($t));
       $t->ts = $ts;
       try {
         $is = $action->insertOne((array)$t);
